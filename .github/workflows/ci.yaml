@@ -38,14 +38,14 @@ jobs:
       - name: Download Coverity
         if: steps.cache_coverity.outputs.cache-hit != 'true'
         run: |
-          wget --quiet https://scan.coverity.com/download/linux64 --post-data "token=${{ secrets.COVERITY_TOKEN }}&project=teragrep-rad_01" -O ${{ env.COVERITY }}.tgz
+          wget --quiet https://scan.coverity.com/download/linux64 --post-data "token=${{ secrets.COVERITY_TOKEN }}&project=teragrep%2Frad_01" -O ${{ env.COVERITY }}.tgz
           mkdir -p ${{ env.COVERITY }}
           tar zxvf ${{ env.COVERITY }}.tgz -C ${{ env.COVERITY }} --strip-components 1
         
       - name: Compile Coverity
         run: |
           ${{ env.COVERITY }}/bin/cov-build --dir cov-int mvn -DskipTests=true --batch-mode clean compile
-          tar czvf teragrep-rad_01.tgz cov-int
+          tar czvf rad_01.tgz cov-int
           
       - name: Upload to Coverity
-        run: curl --silent --form token=${{ secrets.COVERITY_TOKEN }} --form email=${{ secrets.COVERITY_EMAIL }} --form file=@teragrep-rad_01.tgz --form version="${GITHUB_REF##*/}" --form description="automated upload" https://scan.coverity.com/builds?project=teragrep-rad_01
+        run: curl --silent --form token=${{ secrets.COVERITY_TOKEN }} --form email=${{ secrets.COVERITY_EMAIL }} --form file=@rad_01.tgz --form version="${GITHUB_REF##*/}" --form description="automated upload" https://scan.coverity.com/builds?project=teragrep%2Frad_01
