@@ -15,7 +15,7 @@
 package com.teragrep.rad_01;
 
 
-public class DefaultAuditPlugin implements AuditPlugin {
+public final class DefaultAuditPlugin implements AuditPlugin {
 
     @Override
     public void audit(long unixEpoch, byte[] message, byte[] index, byte[] sourcetype, byte[] hostname, byte[] input, String partition, long offset) {
